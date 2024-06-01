@@ -1,0 +1,27 @@
+---
+- name: Determine if Homebrew is already installed.
+  ansible.builtin.command: command -v brew > /dev/null 2>&1
+  register: brew_installed
+  no_log: true
+  ignore_errors: true
+
+- name: Get the installation script
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh"
+    dest: "/tmp/install.sh"
+    mode: "0777"
+  when: brew_installed.rc != 0
+  register: download_brew
+
+- name: Run the Homebrew install script
+  ansible.builtin.shell:
+    cmd: /tmp/install.sh
+  when: download_brew.changed
+
+- name: Clean-up the install script
+  ansible.builtin.file:
+    path: /tmp/install.sh
+    state: absent
+#TODO: Need to execute the following commands, but only on Apple Silicon Macs:
+#      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+#      eval "$(/opt/homebrew/bin/brew shellenv)"
