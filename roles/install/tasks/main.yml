@@ -25,6 +25,9 @@
   ansible.builtin.file:
     path: /tmp/install.sh
     state: absent
+
+- name: Install brew-file as an easy way to manage installs
+  ansible.builtin.command: brew install rcmdnk/file/brew-file
 #TODO: Need to execute the following commands, but only on Apple Silicon Macs:
 #      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 #      eval "$(/opt/homebrew/bin/brew shellenv)"
