@@ -4,6 +4,7 @@
   register: brew_installed
   no_log: true
   ignore_errors: true
+  changed_when: false
 
 - name: Get the installation script
   ansible.builtin.get_url:
@@ -16,6 +17,8 @@
 - name: Run the Homebrew install script
   ansible.builtin.shell:
     cmd: /tmp/install.sh
+  environment:
+    NONINTERACTIVE: "1"
   when: download_brew.changed
 
 - name: Clean-up the install script
@@ -25,3 +28,4 @@
 #TODO: Need to execute the following commands, but only on Apple Silicon Macs:
 #      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 #      eval "$(/opt/homebrew/bin/brew shellenv)"
+#   Might be best as part of the shell play?
