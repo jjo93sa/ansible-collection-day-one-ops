@@ -1,11 +1,11 @@
 namespace: jjo93sa
-name: homebrew_ops
+name: day_one_ops
 version: 0.0.1
 readme: README.md
 authors:
   - "James Osborne <dr.j.osborne@gmail.com>"
-description: Roles and playbooks for performing Homebrew operations
+description: Roles and playbooks for performing initial system configuration
 license_file: "LICENSE"
 tags: []
 dependencies: {}
-repository: "https://github.com/jjo93sa/ansible-collection-homebrew.git"
+repository: "https://github.com/jjo93sa/ansible-collection-day-one-ops.git"
