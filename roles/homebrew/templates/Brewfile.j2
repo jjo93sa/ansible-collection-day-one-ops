@@ -1,0 +1,12 @@
+# Template for brew-file
+{% for tap_name in taps_to_install %}
+tap {{ tap_name }}
+{% endfor %}
+
+{% for cask_name in casks_to_install %}
+cask {{ cask_name }}
+{% endfor %}
+
+{% for app_name in apps_to_install %}
+brew {{ app_name }}
+{% endfor %}

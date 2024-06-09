@@ -1,0 +1,32 @@
+---
+- name: Make .config directory
+  ansible.builtin.file:
+    path: .config
+    state: directory
+    mode: "0700"
+
+#TODO: Need to make the list of directories a parameter, with sensible defaults
+#TODO: Check ansible_user is correct - might be better to have this as a parameter
+#TODO: Consider if creating the directories should be part of the install per application/ config
+- name: Make structure under .config
+  ansible.builtin.file:
+    path: .config/{{ path_item }}
+    state: directory
+    mode: "0755"
+    owner: ansible_user
+    group: ansible_user
+  loop:
+    - brewfile
+    - nvim
+    - nvim/lua
+    - nvim/lua/{{ ansible_user }}
+    - nvim/lua/{{ ansible_user }}/core
+    - nvim/lua/{{ ansible_user }}/plugins
+    - nvim/lua/{{ ansible_user }}/plugins/lsp
+    - packer
+    - skhd
+    - snmp-mibs
+    - yabai
+    - yamllint
+  loop_control:
+    loop_var: path_item
