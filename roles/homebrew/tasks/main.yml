@@ -38,7 +38,8 @@
     - name: Install and configure brew-file
       block:
         - name: Install brew-file as an easy way to manage installs
-          ansible.builtin.command: brew install rcmdnk/file/brew-file
+          ansible.builtin.shell:
+            cmd: brew install rcmdnk/file/brew-file
 
     - name: Now install user requested packages
       block:
