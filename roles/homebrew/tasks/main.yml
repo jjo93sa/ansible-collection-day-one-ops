@@ -39,14 +39,13 @@
       block:
         - name: Install brew-file as an easy way to manage installs
           ansible.builtin.command: brew install rcmdnk/file/brew-file
-          become: "{{ day_one_ops_deploy_user }}"
 
     - name: Now install user requested packages
       block:
         - name: Template Brewfile
           ansible.builtin.template:
             src: Brewfile.j2
-            dest: .config/brewfile/Brewfile
+            dest: "{{ _deploy_user_home }}/.config/brewfile/Brewfile"
             mode: "0644"
             owner: "{{ day_one_ops_deploy_user }}"
             group: "{{ day_one_ops_deploy_user }}"
