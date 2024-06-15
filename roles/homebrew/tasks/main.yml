@@ -40,6 +40,8 @@
         - name: Install brew-file as an easy way to manage installs
           ansible.builtin.shell:
             cmd: brew install rcmdnk/file/brew-file
+          args:
+            executable: /bin/bash
 
     - name: Now install user requested packages
       block:
@@ -56,3 +58,5 @@
             cmd: brew file install --appstore 0
           environment:
             HOMEBREW_BREWFILE: "{{ _deploy_user_home }}/.config/brewfile/Brewfile"
+          args:
+            executable: /bin/bash
