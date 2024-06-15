@@ -39,7 +39,7 @@
       block:
         - name: Install brew-file as an easy way to manage installs
           ansible.builtin.command: brew install rcmdnk/file/brew-file
-          become: "{{ day_one_ops deploy_user }}"
+          become: "{{ day_one_ops_deploy_user }}"
 
     - name: Now install user requested packages
       block:

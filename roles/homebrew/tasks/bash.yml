@@ -2,12 +2,14 @@
 - name: Configure user shell
   ansible.builtin.blockinfile:
     path: "{{ _deploy_user_home }}/.bashrc"
+    marker: "# {mark} Ansible managed - homebrew"
     block: |
       eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 - name: Add wrapper
   ansible.builtin.blockinfile:
     path: "{{ _deploy_user_home }}/.bashrc"
+    marker: "# {mark} Ansible managed - brewfile"
     block: |
       if [ -f $(brew --prefix)/etc/brew-wrap ];then
         source $(brew --prefix)/etc/brew-wrap
