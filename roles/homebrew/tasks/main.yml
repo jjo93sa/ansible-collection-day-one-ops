@@ -28,7 +28,7 @@
 
     - name: Determine user properties
       ansible.builtin.include_tasks:
-        file: "{{ (ansible_facts.ansible_os_family == 'Darwin') | ternary(user_macos.yml, user_linux.yml) }}"
+        file: "{{ (ansible_os_family == 'Darwin') | ternary(user_macos.yml, user_linux.yml) }}"
 
     - name: Configure user's shell
       ansible.builtin.include_tasks:
