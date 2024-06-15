@@ -7,7 +7,7 @@
 
 - name: Add wrapper
   ansible.builtin.blockinfile:
-    path: /home/{{ deploy_user_home }}/.bashrc
+    path: /home/{{ _deploy_user_home }}/.bashrc
     block: |
       if [ -f $(brew --prefix)/etc/brew-wrap ];then
         source $(brew --prefix)/etc/brew-wrap
