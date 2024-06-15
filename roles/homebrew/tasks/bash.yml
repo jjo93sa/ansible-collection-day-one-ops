@@ -1,4 +1,10 @@
 ---
+- name: Configure user shell
+  ansible.builtin.blockinfile:
+    path: "{{ _deploy_user_home }}/.bashrc"
+    block: |
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 - name: Add wrapper
   ansible.builtin.blockinfile:
     path: /home/{{ deploy_user_home }}/.bashrc

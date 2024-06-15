@@ -1,13 +1,14 @@
 ---
+- name: Configure user shell
+  ansible.builtin.blockinfile:
+    path: "{{ _deploy_user_home }}/.zprofile"
+    block: |
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+
 - name: Add wrapper
   ansible.builtin.blockinfile:
-    path: /home/{{ deploy_user_home }}/.zshrc
+    path: "{{ _deploy_user_home }}/.zshrc"
     block: |
       if [ -f $(brew --prefix)/etc/brew-wrap ];then
         source $(brew --prefix)/etc/brew-wrap
       fi
-
-#TODO: Need to execute the following commands, but only on Apple Silicon Macs:
-#      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-#      eval "$(/opt/homebrew/bin/brew shellenv)"
-#   Might be best as part of the shell play?

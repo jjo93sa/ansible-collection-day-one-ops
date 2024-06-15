@@ -1,0 +1,8 @@
+---
+- name: Test macos user property discovery
+  hosts: localhost
+  vars:
+    day_one_ops_deploy_user: james
+  tasks:
+    - ansible.builtin.include_tasks:
+        file: user_macos.yml

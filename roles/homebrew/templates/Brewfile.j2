@@ -1,12 +1,12 @@
 # Template for brew-file
-{% for tap_name in taps_to_install %}
+{% for tap_name in day_one_ops_brew_taps %}
 tap {{ tap_name }}
 {% endfor %}
 
-{% for cask_name in casks_to_install %}
+{% for cask_name in day_one_ops_brew_casks %}
 cask {{ cask_name }}
 {% endfor %}
 
-{% for app_name in apps_to_install %}
+{% for app_name in day_one_ops_brew_apps %}
 brew {{ app_name }}
 {% endfor %}

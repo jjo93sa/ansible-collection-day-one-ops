@@ -1,0 +1,8 @@
+---
+- name: Test linux user property discovery
+  hosts: all
+  vars:
+    day_one_ops_deploy_user: james
+  tasks:
+    - ansible.builtin.include_tasks:
+        file: user_linux.yml
