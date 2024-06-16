@@ -18,7 +18,7 @@
   block:
     - name: Install neovim with homebrew
       ansible.builtin.shell:
-        cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && brew file install newovim'
+        cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && brew file install neovim'
       register: _install_neovim_result
       changed_when:
         - '"Installing neovim" in _install_neovim_result.stdout'
