@@ -48,5 +48,5 @@ day_one_ops_neovim_plugins_default:
   - vim-maximizer.lua
   - which-key.lua
 
-day_one_ops_neovim_plugins_user: {}
+day_one_ops_neovim_plugins_user: []
 day_one_ops_neovim_plugins: "{{ (day_one_ops_neovim_plugins_default + day_one_ops_neovim_plugins_user) | unique }}"
