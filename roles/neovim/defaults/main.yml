@@ -3,12 +3,8 @@ day_one_ops_neovim_core_default:
   - keymaps.lua
   - options.lua
 
-day_one_ops_neovim_core_user: {}
-day_one_ops_neovim_core: >-
-  {{-
-    day_one_ops_neovim_core_default |
-      combine(day_one_ops_neovim_core_user, recursive = True)
-  }}
+day_one_ops_neovim_core_user: []
+day_one_ops_neovim_core: "{{ (day_one_ops_neovim_core_default + day_one_ops_neovim_core_user) | unique }}"
 
 day_one_ops_neovim_lsp_default:
   - lspconfig.lua
@@ -16,12 +12,8 @@ day_one_ops_neovim_lsp_default:
   - none-ls.lua
   - yamlfmt
 
-day_one_ops_neovim_lsp_user: {}
-day_one_ops_neovim_lsp: >-
-  {{-
-    day_one_ops_neovim_lsp_default |
-      combine(day_one_ops_neovim_lsp_user, recursive = True)
-  }}
+day_one_ops_neovim_lsp_user: []
+day_one_ops_neovim_lsp: "{{ (day_one_ops_neovim_lsp_default + day_one_ops_neovim_lsp_user) | unique }}"
 
 day_one_ops_neovim_plugins_default:
   - alpha-nvim.lua
@@ -57,8 +49,4 @@ day_one_ops_neovim_plugins_default:
   - which-key.lua
 
 day_one_ops_neovim_plugins_user: {}
-day_one_ops_neovim_plugins: >-
-  {{-
-    day_one_ops_neovim_plugins_default |
-      combine(day_one_ops_neovim_plugins_user, recursive = True)
-  }}
+day_one_ops_neovim_plugins: "{{ (day_one_ops_neovim_plugins_default + day_one_ops_neovim_plugins_user) | unique }}"
