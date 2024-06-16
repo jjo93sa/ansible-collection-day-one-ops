@@ -73,7 +73,7 @@
 
 - name: Copy plugin config files
   ansible.builtin.copy:
-    src: "plugin/{{ item }}"
+    src: "plugins/{{ item }}"
     dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/plugins/{{ item }}"
     owner: "{{ day_one_ops_deploy_user }}"
     group: "{{ day_one_ops_deploy_user }}"
