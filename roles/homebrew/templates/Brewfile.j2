@@ -1,12 +1,18 @@
 # Template for brew-file
+{% if day_one_ops_brew_taps|length %}
 {% for tap_name in day_one_ops_brew_taps %}
 tap {{ tap_name }}
 {% endfor %}
+{% endif %}
 
+{% if day_one_ops_brew_casks|length %}
 {% for cask_name in day_one_ops_brew_casks %}
 cask {{ cask_name }}
 {% endfor %}
+{% endif %}
 
+{% if day_one_ops_brew_apps|length %}
 {% for app_name in day_one_ops_brew_apps %}
 brew {{ app_name }}
 {% endfor %}
+{% endif %}

@@ -1,14 +1,18 @@
 ---
+- name: Determine user and shell properties
+  ansible.builtin.include_tasks:
+    file: "{{ (ansible_os_family == 'Darwin') | ternary('user_macos.yml', 'user_linux.yml') }}"
+
 - name: Determine if Homebrew is already installed.
   ansible.builtin.shell:
     cmd: command -v brew > /dev/null 2>&1
-  register: brew_installed
-  #  no_log: true
+  executable: /bin/bash
+  register: _brew_installed_result
   ignore_errors: true
   changed_when: false
 
 - name: Install missing Homebrew
-  when: brew_installed.rc != 0
+  when: _brew_installed_result.rc != 0
   block:
     - name: Get the installation script
       ansible.builtin.get_url:
@@ -19,6 +23,8 @@
 
     - name: Run the Homebrew install script
       ansible.builtin.command: /tmp/install.sh
+      args:
+        creates: "{{ _default_brew_path }}/brew"
       environment:
         NONINTERACTIVE: "1"
 
@@ -27,36 +33,49 @@
         path: /tmp/install.sh
         state: absent
 
-    - name: Determine user properties
-      ansible.builtin.include_tasks:
-        file: "{{ (ansible_os_family == 'Darwin') | ternary('user_macos.yml', 'user_linux.yml') }}"
+- name: Determine if brew-file is already installed
+  ansible.builtin.shell:
+    cmd: command -v brew-file > /dev/null 2>&1
+  executable: /bin/bash
+  register: _brewfile_installed_result
+  ignore_errors: true
+  changed_when: false
 
-    - name: Configure user's shell
-      ansible.builtin.include_tasks:
-        file: "{{ _deploy_user_shell }}.yml"
+- name: Install and configure brew-file
+  when: _brewfile_installed_result.rc != 0
+  block:
+    - name: Install brew-file as an easy way to manage installs
+      ansible.builtin.shell:
+        cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && brew install rcmdnk/file/brew-file'
+        creates: "{{ _default_brew_path }}/brew-file"
 
-    - name: Install and configure brew-file
-      block:
-        - name: Install brew-file as an easy way to manage installs
-          ansible.builtin.shell:
-            cmd: brew install rcmdnk/file/brew-file
-          args:
-            executable: /bin/bash
+    - name: Create config file location
+      ansible.builtin.file:
+        path: "{{ _deploy_user_home }}/.config/brewfile/"
+        state: directory
+        owner: "{{ day_one_ops_deploy_user }}"
+        group: "{{ day_one_ops_deploy_user }}"
+        mode: "0750"
 
-    - name: Now install user requested packages
-      block:
-        - name: Template Brewfile
-          ansible.builtin.template:
-            src: Brewfile.j2
-            dest: "{{ _deploy_user_home }}/.config/brewfile/Brewfile"
-            mode: "0644"
-            owner: "{{ day_one_ops_deploy_user }}"
-            group: "{{ day_one_ops_deploy_user }}"
+- name: Configure user's shell
+  ansible.builtin.include_tasks:
+    file: "{{ _deploy_user_shell }}.yml"
 
-        - name: Now install the applications
-          ansible.builtin.shell:
-            cmd: brew file install --appstore 0
-          environment:
-            HOMEBREW_BREWFILE: "{{ _deploy_user_home }}/.config/brewfile/Brewfile"
-          args:
-            executable: /bin/bash
+- name: Now install user requested packages
+  block:
+    - name: Template Brewfile
+      ansible.builtin.template:
+        src: Brewfile.j2
+        dest: "{{ _deploy_user_home }}/.config/brewfile/Brewfile"
+        mode: "0644"
+        owner: "{{ day_one_ops_deploy_user }}"
+        group: "{{ day_one_ops_deploy_user }}"
+
+    - name: Now install the applications
+      ansible.builtin.shell:
+        cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && brew file install --appstore 0'
+      register: _brew_file_result
+      environment:
+        HOMEBREW_BREWFILE: "{{ _deploy_user_home }}/.config/brewfile/Brewfile"
+      changed_when:
+        - '"Installing" in _brew_file_result.stdout'

@@ -10,3 +10,4 @@
   ansible.builtin.set_fact:
     _deploy_user_shell: "{{ ansible_facts.getent_passwd[day_one_ops_deploy_user][5] | basename }}"
     _deploy_user_home: "{{ ansible_facts.getent_passwd[day_one_ops_deploy_user][4] }}"
+    _default_brew_path: "/home/linuxbrew/.linuxbrew/bin"
