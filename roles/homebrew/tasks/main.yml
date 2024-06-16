@@ -6,7 +6,7 @@
 - name: Determine if Homebrew is already installed.
   ansible.builtin.shell:
     cmd: command -v brew > /dev/null 2>&1
-  executable: /bin/bash
+    executable: /bin/bash
   register: _brew_installed_result
   ignore_errors: true
   changed_when: false
@@ -36,7 +36,7 @@
 - name: Determine if brew-file is already installed
   ansible.builtin.shell:
     cmd: command -v brew-file > /dev/null 2>&1
-  executable: /bin/bash
+    executable: /bin/bash
   register: _brewfile_installed_result
   ignore_errors: true
   changed_when: false

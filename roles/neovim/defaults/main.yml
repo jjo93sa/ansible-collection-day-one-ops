@@ -1,0 +1,64 @@
+---
+day_one_ops_neovim_core_default:
+  - keymaps.lua
+  - options.lua
+
+day_one_ops_neovim_core_user: {}
+day_one_ops_neovim_core: >-
+  {{-
+    day_one_ops_neovim_core_default |
+      combine(day_one_ops_neovim_core_user, recursive = True)
+  }}
+
+day_one_ops_neovim_lsp_default:
+  - lspconfig.lua
+  - mason.lua
+  - none-ls.lua
+  - yamlfmt
+
+day_one_ops_neovim_lsp_user: {}
+day_one_ops_neovim_lsp: >-
+  {{-
+    day_one_ops_neovim_lsp_default |
+      combine(day_one_ops_neovim_lsp_user, recursive = True)
+  }}
+
+day_one_ops_neovim_plugins_default:
+  - alpha-nvim.lua
+  - ansible-vim.lua
+  - auto-session.lua
+  - bufferline.lua
+  - colorizer.lua
+  - colourscheme.lua
+  - comment.lua
+  - dressing.lua
+  - formatting.lua
+  - gitsigns.lua
+  - harpoon.lua
+  - indent-blankline.lua
+  - init.lua
+  - lazygit.lua
+  - linting.lua
+  - lualine.lua
+  - nvim-ansible.lua
+  - nvim-autopairs.lua
+  - nvim-cmp.lua
+  - nvim-surround.lua
+  - nvim-tree.lua
+  - nvim-treesitter-text-objects.lua
+  - nvim-treesitter.lua
+  - nvim-web-devicons.lua
+  - substitute.lua
+  - telescope.lua
+  - todo-comments.lua
+  - trouble.lua
+  - vim-crosshairs.lua
+  - vim-maximizer.lua
+  - which-key.lua
+
+day_one_ops_neovim_plugins_user: {}
+day_one_ops_neovim_plugins: >-
+  {{-
+    day_one_ops_neovim_plugins_default |
+      combine(day_one_ops_neovim_plugins_user, recursive = True)
+  }}

@@ -1,0 +1,90 @@
+---
+# This role installs and configures neovim
+#TODO: Looks like this can be refactored into a common location
+- name: Determine user and shell properties
+  ansible.builtin.include_tasks:
+    file: "{{ (ansible_os_family == 'Darwin') | ternary('user_macos.yml', 'user_linux.yml') }}"
+
+- name: Is neovim already installed
+  ansible.builtin.shell:
+    cmd: command -v nvim > /dev/null 2>&1
+    executable: /bin/bash
+  register: _query_neovim_result
+  ignore_errors: true
+  changed_when: false
+
+- name: Install missing neovim
+  when: _query_neovim_result.rc != 0
+  block:
+    - name: Install neovim with homebrew
+      ansible.builtin.shell:
+        cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && brew file install newovim'
+      register: _install_neovim_result
+      changed_when:
+        - '"Installing neovim" in _install_neovim_result.stdout'
+
+- name: Create config directories for neovim
+  ansible.builtin.file:
+    path: "{{ _deploy_user_home }}/.config/{{ item }}"
+    state: directory
+    owner: "{{ day_one_ops_deploy_user }}"
+    group: "{{ day_one_ops_deploy_user }}"
+    mode: "0750"
+  loop:
+    - nvim
+    - nvim/lua
+    - nvim/lua/{{ day_one_ops_deploy_user }}
+    - nvim/lua/{{ day_one_ops_deploy_user }}/core
+    - nvim/lua/{{ day_one_ops_deploy_user }}/plugins
+    - nvim/lua/{{ day_one_ops_deploy_user }}/plugins/lsp
+
+- name: Create init file
+  ansible.builtin.template:
+    dest: "{{ _deploy_user_home }}/.config/nvim/init.lua"
+    src: init.lua.j2
+    owner: "{{ day_one_ops_deploy_user }}"
+    group: "{{ day_one_ops_deploy_user }}"
+    mode: "0644"
+
+- name: Create lazy plugin manager file
+  ansible.builtin.template:
+    dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/lazy.lua"
+    src: lazy.lua.j2
+    owner: "{{ day_one_ops_deploy_user }}"
+    group: "{{ day_one_ops_deploy_user }}"
+    mode: "0644"
+
+- name: Create core init file
+  ansible.builtin.template:
+    dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/core/init.lua"
+    src: core-init.lua.j2
+    owner: "{{ day_one_ops_deploy_user }}"
+    group: "{{ day_one_ops_deploy_user }}"
+    mode: "0644"
+
+- name: Copy core config files
+  ansible.builtin.copy:
+    src: "core/{{ item }}"
+    dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/core/{{ item }}"
+    owner: "{{ day_one_ops_deploy_user }}"
+    group: "{{ day_one_ops_deploy_user }}"
+    mode: "0644"
+  loop: "{{ day_one_ops_neovim_core }}"
+
+- name: Copy plugin config files
+  ansible.builtin.copy:
+    src: "plugin/{{ item }}"
+    dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/plugins/{{ item }}"
+    owner: "{{ day_one_ops_deploy_user }}"
+    group: "{{ day_one_ops_deploy_user }}"
+    mode: "0644"
+  loop: "{{ day_one_ops_neovim_plugins }}"
+
+- name: Copy lsp config files
+  ansible.builtin.copy:
+    src: "plugins/lsp/{{ item }}"
+    dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/plugins/lsp/{{ item }}"
+    owner: "{{ day_one_ops_deploy_user }}"
+    group: "{{ day_one_ops_deploy_user }}"
+    mode: "0644"
+  loop: "{{ day_one_ops_neovim_lsp }}"
