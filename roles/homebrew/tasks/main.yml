@@ -22,6 +22,7 @@
       args:
         creates: "{{ _default_brew_path }}/brew"
       become: true
+      become_user: "{{ day_one_ops_deploy_user }}"
       environment:
         NONINTERACTIVE: "1"
 
