@@ -5,6 +5,8 @@
     marker: "# {mark} Ansible managed - homebrew"
     block: |
       eval "$({{ _default_brew_path }}/brew shellenv)"
+  become: true
+  become_user: "{{ day_one_ops_deploy_user }}"
 
 - name: Add wrapper
   ansible.builtin.blockinfile:
@@ -14,3 +16,5 @@
       if [ -f $(brew --prefix)/etc/brew-wrap ];then
         source $(brew --prefix)/etc/brew-wrap
       fi
+  become: true
+  become_user: "{{ day_one_ops_deploy_user }}"
