@@ -7,10 +7,10 @@
   ansible.builtin.debug:
     msg: "User shell mismatch. Requested {{ day_one_ops_deploy_user_shell }} but configured {{ _deploy_user_shell }}"
   when:
-    - _deploy_user_shell is not day_one_ops_deploy_user_shell
+    - _deploy_user_shell is not search(day_one_ops_deploy_user_shell)
 
 - name: Change shell for deploy user
   ansible.builtin.debug:
     msg: "TODO: Change shell placeholder"
   when:
-    - _deploy_user_shell is not day_one_ops_deploy_user_shell
+    - _deploy_user_shell is not search(day_one_ops_deploy_user_shell)
