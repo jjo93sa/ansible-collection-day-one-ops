@@ -37,32 +37,32 @@
   ansible.builtin.template:
     dest: "{{ _deploy_user_home }}/.config/nvim/init.lua"
     src: init.lua.j2
-    owner: "{{ day_one_ops_deploy_user }}"
-    group: "{{ day_one_ops_deploy_user }}"
+    owner: "{{ _deploy_user_uid }}"
+    group: "{{ _deploy_user_gid }}"
     mode: "0644"
 
 - name: Create lazy plugin manager file
   ansible.builtin.template:
     dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/lazy.lua"
     src: lazy.lua.j2
-    owner: "{{ day_one_ops_deploy_user }}"
-    group: "{{ day_one_ops_deploy_user }}"
+    owner: "{{ _deploy_user_uid }}"
+    group: "{{ _deploy_user_gid }}"
     mode: "0644"
 
 - name: Create core init file
   ansible.builtin.template:
     dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/core/init.lua"
     src: core-init.lua.j2
-    owner: "{{ day_one_ops_deploy_user }}"
-    group: "{{ day_one_ops_deploy_user }}"
+    owner: "{{ _deploy_user_uid }}"
+    group: "{{ _deploy_user_gid }}"
     mode: "0644"
 
 - name: Copy core config files
   ansible.builtin.copy:
     src: "core/{{ item }}"
     dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/core/{{ item }}"
-    owner: "{{ day_one_ops_deploy_user }}"
-    group: "{{ day_one_ops_deploy_user }}"
+    owner: "{{ _deploy_user_uid }}"
+    group: "{{ _deploy_user_gid }}"
     mode: "0644"
   loop: "{{ day_one_ops_neovim_core }}"
 
@@ -70,8 +70,8 @@
   ansible.builtin.copy:
     src: "plugins/{{ item }}"
     dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/plugins/{{ item }}"
-    owner: "{{ day_one_ops_deploy_user }}"
-    group: "{{ day_one_ops_deploy_user }}"
+    owner: "{{ _deploy_user_uid }}"
+    group: "{{ _deploy_user_gid }}"
     mode: "0644"
   loop: "{{ day_one_ops_neovim_plugins }}"
 
@@ -79,7 +79,7 @@
   ansible.builtin.copy:
     src: "plugins/lsp/{{ item }}"
     dest: "{{ _deploy_user_home }}/.config/nvim/lua/{{ day_one_ops_deploy_user }}/plugins/lsp/{{ item }}"
-    owner: "{{ day_one_ops_deploy_user }}"
-    group: "{{ day_one_ops_deploy_user }}"
+    owner: "{{ _deploy_user_uid }}"
+    group: "{{ _deploy_user_gid }}"
     mode: "0644"
   loop: "{{ day_one_ops_neovim_lsp }}"

@@ -8,8 +8,8 @@
   ansible.builtin.set_fact:
     _deploy_user_shell: "{{ _dscacheutil_out.stdout | regex_search('(?i)shell: /bin/(?P<shell>[a-z]+)', '\\1', multiline=True) }}"
     _deploy_user_home: "{{ _dscacheutil_out.stdout | regex_search('(?i)dir: (?P<homedir>[a-zA-Z0-9/]+)', '\\1', multiline=True) }}"
-    _default_user_uid: "{{ _dscacheutil_out.stdout | regex_search('(?i)uid: (?P<uid>[0-9]+)', '\\1', multiline=True) }}"
-    _default_user_gid: "{{ _dscacheutil_out.stdout | regex_search('(?i)gid: (?P<gid>[0-9]+)', '\\1', multiline=True) }}"
+    _deploy_user_uid: "{{ _dscacheutil_out.stdout | regex_search('(?i)uid: (?P<uid>[0-9]+)', '\\1', multiline=True) }}"
+    _deploy_user_gid: "{{ _dscacheutil_out.stdout | regex_search('(?i)gid: (?P<gid>[0-9]+)', '\\1', multiline=True) }}"
 
 - name: Set macOS brew path
   ansible.builtin.set_fact:
