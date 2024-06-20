@@ -1,11 +1,16 @@
 ---
-- name: Get users shell. Darwin doesn't support Ansible getent
+- name: Get user properties NB Darwin doesn't support Ansible getent
   ansible.builtin.command: dscacheutil -q user -a name {{ day_one_ops_deploy_user }}
   register: _dscacheutil_out
   changed_when: false
 
-- name: Set fact with user's shell
+- name: Set facts with user info
   ansible.builtin.set_fact:
     _deploy_user_shell: "{{ _dscacheutil_out.stdout | regex_search('(?i)shell: /bin/(?P<shell>[a-z]+)', '\\1', multiline=True) }}"
     _deploy_user_home: "{{ _dscacheutil_out.stdout | regex_search('(?i)dir: (?P<homedir>[a-zA-Z0-9/]+)', '\\1', multiline=True) }}"
+    _default_user_uid: "{{ _dscacheutil_out.stdout | regex_search('(?i)uid: (?P<uid>[0-9]+)', '\\1', multiline=True) }}"
+    _default_user_gid: "{{ _dscacheutil_out.stdout | regex_search('(?i)gid: (?P<gid>[0-9]+)', '\\1', multiline=True) }}"
+
+- name: Set macOS brew path
+  ansible.builtin.set_fact:
     _default_brew_path: "/opt/homebrew/bin"

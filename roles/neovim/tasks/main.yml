@@ -1,10 +1,5 @@
 ---
 # This role installs and configures neovim
-#TODO: Looks like this can be refactored into a common location
-- name: Determine user and shell properties
-  ansible.builtin.include_tasks:
-    file: "{{ (ansible_os_family == 'Darwin') | ternary('user_macos.yml', 'user_linux.yml') }}"
-
 - name: Is neovim already installed
   ansible.builtin.shell:
     cmd: command -v nvim > /dev/null 2>&1

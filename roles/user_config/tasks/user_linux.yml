@@ -1,5 +1,5 @@
 ---
-- name: Get users properties
+- name: Get user properties
   ansible.builtin.getent:
     database: passwd
     key: "{{ day_one_ops_deploy_user }}"
@@ -10,4 +10,9 @@
   ansible.builtin.set_fact:
     _deploy_user_shell: "{{ ansible_facts.getent_passwd[day_one_ops_deploy_user][5] | basename }}"
     _deploy_user_home: "{{ ansible_facts.getent_passwd[day_one_ops_deploy_user][4] }}"
+    _default_user_uid: "{{ ansible_facts.getent_passwd[day_one_ops_deploy_user][1] }}"
+    _default_user_gid: "{{ ansible_facts.getent_passwd[day_one_ops_deploy_user][2] }}"
+
+- name: Set Linux brew path
+  ansible.builtin.set_fact:
     _default_brew_path: "/home/linuxbrew/.linuxbrew/bin"

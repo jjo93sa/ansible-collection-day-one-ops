@@ -1,0 +1,16 @@
+---
+- name: Determine user and shell properties
+  ansible.builtin.include_tasks:
+    file: "{{ (ansible_os_family == 'Darwin') | ternary('user_macos.yml', 'user_linux.yml') }}"
+
+- name: Determine if user shell is properly set
+  ansible.builtin.debug:
+    msg: "User shell mismatch. Requested {{ day_one_ops_deploy_user_shell }} but configured {{ _deploy_user_shell }}"
+  when:
+    - _deploy_user_shell is not day_one_ops_deploy_user_shell
+
+- name: Change shell for deploy user
+  ansible.builtin.debug:
+    msg: "TODO: Change shell placeholder"
+  when:
+    - _deploy_user_shell is not day_one_ops_deploy_user_shell
