@@ -49,8 +49,8 @@
       ansible.builtin.file:
         path: "{{ _deploy_user_home }}/.config/brewfile/"
         state: directory
-        owner: "{{ day_one_ops_deploy_user }}"
-        group: "{{ day_one_ops_deploy_user }}"
+        owner: "{{ _deploy_user_uid }}"
+        group: "{{ _deploy_user_gid }}"
         mode: "0750"
 
 - name: Configure user's shell
@@ -64,8 +64,8 @@
         src: Brewfile.j2
         dest: "{{ _deploy_user_home }}/.config/brewfile/Brewfile"
         mode: "0644"
-        owner: "{{ day_one_ops_deploy_user }}"
-        group: "{{ day_one_ops_deploy_user }}"
+        owner: "{{ _deploy_user_uid }}"
+        group: "{{ _deploy_user_gid }}"
 
     - name: Now install the applications
       ansible.builtin.shell:
