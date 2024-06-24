@@ -11,7 +11,7 @@
   become_user: day_one_ops_deploy_user
 
 - name: Create venv and install content
-  ansibe.builtin.pip:
+  ansible.builtin.pip:
     state: present
     virtualenv: "{{ day_one_ops_venv_path ~ '/' ~ day_one_ops_venv_name }}"
     name: "{{ day_one_ops_venv_libs_default + day_one_ops_venv_libs_user | default([]) }}"
