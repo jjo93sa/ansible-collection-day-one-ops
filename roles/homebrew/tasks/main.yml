@@ -54,8 +54,8 @@
         owner: "{{ _deploy_user_uid }}"
       become: true
       when:
-        - not ansible_user is search(day_one_ops_deploy_user)
-        - not (ansible_os_family == 'Darwin')
+        - ansible_user is not search(day_one_ops_deploy_user)
+        - ansible_os_family != 'Darwin'
 
     - name: Create user config file location
       ansible.builtin.file:
