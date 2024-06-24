@@ -7,9 +7,13 @@
     owner: "{{ _deploy_user_uid }}"
     group: "{{ _deploy_user_gid }}"
     mode: "0755"
+  become: true
+  become_user: day_one_ops_deploy_user
 
 - name: Create venv and install content
   ansibe.builtin.pip:
     state: present
     virtualenv: "{{ day_one_ops_venv_path ~ '/' ~ day_one_ops_venv_name }}"
     name: "{{ day_one_ops_venv_libs_default + day_one_ops_venv_libs_user | default([]) }}"
+  become: true
+  become_user: day_one_ops_deploy_user
