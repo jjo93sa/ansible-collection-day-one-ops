@@ -1,0 +1,12 @@
+---
+day_one_ops_venv_path_default: ".virtualenvs"
+day_one_ops_venv_path_user: ""
+day_one_ops_venv_path: "{{ day_one_ops_venv_path_user | default(day_one_ops_venv_path_default) }}"
+
+day_one_ops_venv_name_default: "default"
+day_one_ops_venv_name_user: ""
+day_one_ops_venv_name: "{{ day_one_ops_venv_name_user | default(day_one_ops_venv_name_default) }}"
+
+day_one_ops_venv_libs_default:
+  - ansible
+  - openstackclient
