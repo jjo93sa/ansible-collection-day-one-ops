@@ -1,5 +1,13 @@
 ---
 # This role creates a Python virtual env for the deploy user
+- name: Set fact with venv path
+  ansible.builtin.set_fact:
+    _deploy_user_venv: "{{ _deploy_user_home ~ '/' ~ day_one_ops_venv_path ~ '/' ~ day_one_ops_venv_name }}"
+
+- name: Debug fact
+  ansible.builtin.debug:
+    var: _deploy_user_venv
+
 - name: Create location for virtualenvs
   ansible.builtin.file:
     path: "{{ _deploy_user_home ~ '/' ~ day_one_ops_venv_path }}"
@@ -12,6 +20,6 @@
 - name: Create venv and install content
   ansible.builtin.pip:
     state: present
-    virtualenv: "{{ day_one_ops_venv_path ~ '/' ~ day_one_ops_venv_name }}"
+    virtualenv: "{{ _deploy_user_home ~ '/' ~ day_one_ops_venv_path ~ '/' ~ day_one_ops_venv_name }}"
     name: "{{ day_one_ops_venv_libs_default + day_one_ops_venv_libs_user | default([]) }}"
   become: true
