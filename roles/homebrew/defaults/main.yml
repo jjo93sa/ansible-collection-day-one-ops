@@ -1,7 +1,5 @@
 ---
 day_one_ops_brew_taps_default:
-  - stow
-  - git
 day_one_ops_brew_taps_user: []
 day_one_ops_brew_taps: "{{ day_one_ops_brew_taps_default + day_one_ops_brew_taps_user | default([]) }}"
 
@@ -9,6 +7,8 @@ day_one_ops_brew_casks_default: []
 day_one_ops_brew_casks_user: []
 day_one_ops_brew_casks: "{{ day_one_ops_brew_casks_default + day_one_ops_brew_casks_user | default([]) }}"
 
-day_one_ops_brew_apps_default: []
+day_one_ops_brew_apps_default:
+  - stow
+  - git
 day_one_ops_brew_apps_user: []
 day_one_ops_brew_apps: "{{ day_one_ops_brew_apps_default + day_one_ops_brew_apps_user | default([]) }}"
