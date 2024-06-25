@@ -10,6 +10,19 @@
   when:
     - (day_one_ops_dotfiles_url_user is defined) and day_one_ops_dotfiles_url_user
 
+- name: Debug some vars
+  ansible.builtin.debug:
+    msg: "{{ day_one_ops_dotfiles_url_user }} and {{ day_one_ops_dotfiles_dest_default }}"
+
+- name: Create the desired location
+  ansible.builtin.file:
+    state: directory
+    path: "{{ day_one_ops_dotfiles_dest_user | default(day_one_ops_dotfiles_dest_default) }}"
+    owner: "{{ _deploy_user_uid }}"
+    group: "{{ _deploy_user_gid }}"
+    mode: "0644"
+  become: true
+
 - name: Clone the repository
   ansible.builtin.git:
     clone: true
