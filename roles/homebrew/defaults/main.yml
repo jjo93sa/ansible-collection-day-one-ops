@@ -1,5 +1,5 @@
 ---
-day_one_ops_brew_taps_default:
+day_one_ops_brew_taps_default: []
 day_one_ops_brew_taps_user: []
 day_one_ops_brew_taps: "{{ day_one_ops_brew_taps_default + day_one_ops_brew_taps_user | default([]) }}"
 
