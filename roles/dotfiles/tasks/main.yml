@@ -1,0 +1,23 @@
+---
+# This role clones a user's dotfiles from a git repo so they may
+# be later symlinked by GNU stow
+
+#TODO: Express dependency on role user_config
+
+- name: Check for repository access
+  ansible.builtin.debug:
+    msg: "TODO: check that the repo exists"
+  when:
+    - (day_one_ops_dotfiles_url_user is defined) and day_one_ops_dotfiles_url_user
+
+- name: Clone the repository
+  ansible.builtin.git:
+    clone: true
+    remote: origin
+    repo: "{{ day_one_ops_dotfiles_url_user }}"
+    dest: "{{ day_one_ops_dotfiles_dest_user | default(day_one_ops_dotfiles_dest_default) }}"
+    version: "{{ day_one_ops_dotfiles_version_user | default(day_one_ops_dotfiles_version_default) }}"
+  become: true
+  become_user: "{{ day_one_ops_deploy_user }}"
+  when:
+    - (day_one_ops_dotfiles_url_user is defined) and day_one_ops_dotfiles_url_user
