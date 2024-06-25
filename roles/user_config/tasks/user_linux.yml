@@ -15,4 +15,5 @@
 
 - name: Set Linux brew path
   ansible.builtin.set_fact:
+    _default_brew_home: "/home/linuxbrew"
     _default_brew_path: "/home/linuxbrew/.linuxbrew/bin"

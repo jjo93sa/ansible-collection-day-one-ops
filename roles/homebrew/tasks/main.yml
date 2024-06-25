@@ -50,8 +50,9 @@
     - name: Ensure correct ownership of brew install
       ansible.builtin.file:
         recurse: true
-        path: "{{ _default_brew_path }}"
+        path: "{{ _default_brew_home }}"
         owner: "{{ _deploy_user_uid }}"
+        group: "{{ _deploy_user_gid }}"
       become: true
       when:
         - ansible_user is not search(day_one_ops_deploy_user)
