@@ -17,7 +17,7 @@
 - name: Create the desired location
   ansible.builtin.file:
     state: directory
-    path: "{{ day_one_ops_dotfiles_dest_user | default(day_one_ops_dotfiles_dest_default) }}"
+    path: "{{ _deply_user_dotfiles }}"
     owner: "{{ _deploy_user_uid }}"
     group: "{{ _deploy_user_gid }}"
     mode: "0700"
@@ -28,7 +28,7 @@
     clone: true
     remote: origin
     repo: "{{ day_one_ops_dotfiles_url_user }}"
-    dest: "{{ day_one_ops_dotfiles_dest_user | default(day_one_ops_dotfiles_dest_default) }}"
+    dest: "{{ _deploy_user_dotfiles }}"
     version: "{{ day_one_ops_dotfiles_version_user | default(day_one_ops_dotfiles_version_default) }}"
   become: true
   become_user: "{{ day_one_ops_deploy_user }}"
