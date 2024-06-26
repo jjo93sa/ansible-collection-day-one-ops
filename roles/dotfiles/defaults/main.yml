@@ -1,4 +1,3 @@
 ---
 day_one_ops_dotfiles_version_default: "main"
 day_one_ops_dotfiles_dest_default: "{{ _deploy_user_home ~ '/.config/dotfiles' }}"
-_deploy_user_dotfiles: "{{ day_one_ops_dotfiles_dest_user | default(day_one_ops_dotfiles_dest_default) }}"

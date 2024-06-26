@@ -32,5 +32,15 @@
     version: "{{ day_one_ops_dotfiles_version_user | default(day_one_ops_dotfiles_version_default) }}"
   become: true
   become_user: "{{ day_one_ops_deploy_user }}"
+  register: _git_clone_result
   when:
     - (day_one_ops_dotfiles_url_user is defined) and day_one_ops_dotfiles_url_user
+
+- name: Debug the git clone operation
+  ansible.builtin.debug:
+    msg: " *** Git clone result: {{ _git_clone_result }}"
+
+- name: Now we have the dotfiles, set a fact
+  ansible.builtin.set_fact:
+    _deploy_user_dotfiles: "{{ day_one_ops_dotfiles_dest_user | default(day_one_ops_dotfiles_dest_default) }}"
+  #TODO: make this conditional on success of clone
