@@ -7,7 +7,7 @@
   block:
     - name: Is neovim already installed
       ansible.builtin.shell:
-        cmd: which -s nvim
+        cmd: which nvim
         executable: /bin/bash
       register: _query_neovim_result
       ignore_errors: true
@@ -28,7 +28,7 @@
 
     - name: Check stow binary exists
       ansible.builtin.shell:
-        cmd: which -s stow
+        cmd: which stow
         executable: /bin/bash
       register: _query_stow_result
       ignore_errors: true
@@ -44,4 +44,4 @@
 
     - name: Debug stow link result
       ansible.builtin.debug:
-        var: stow_link_result
+        var: _stow_link_result
