@@ -36,7 +36,7 @@
 
     - name: Link the configuration
       ansible.builtin.shell:
-        cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && stow -d {{ _deploy_user_dotfiles }} -t {{ _deploy_user_home }} neovim'
+        cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && stow --dotfiles -d {{ _deploy_user_dotfiles }} -t {{ _deploy_user_home }} neovim'
       when:
         - _dotfiles_result.stat.exists
         - _query_stow_result.rc == 0

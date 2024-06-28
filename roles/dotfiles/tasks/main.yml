@@ -26,6 +26,7 @@
 - name: Clone the repository
   ansible.builtin.git:
     clone: true
+    force: true
     remote: origin
     repo: "{{ day_one_ops_dotfiles_url_user }}"
     dest: "{{ day_one_ops_dotfiles_dest_user | default(day_one_ops_dotfiles_dest_default) }}"
