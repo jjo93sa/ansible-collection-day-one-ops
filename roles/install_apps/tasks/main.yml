@@ -1,0 +1,23 @@
+---
+# This role installs and configures apps as specified in list variable
+# day_one_ops_app_list_user, which is merged with the default set of apps
+
+# We run this as deploy_user
+- name: Install and configure apps
+  become: true
+  become_user: "{{ day_one_ops_deploy_user }}"
+  block:
+    - name: Create list of applications to install
+      ansible.builtin.set_fact:
+        day_one_ops_apps_list: "{{ day_one_ops_apps_list_default + day_one_ops_apps_list_user | default([]) }}"
+
+    - name: Create a combined dictionary of app name mappings
+      ansible.builtin.set_fact:
+        day_one_ops_apps_map: "{{ day_one_ops_apps_map_default | combine(day_one_ops_apps_map_user | default({})) }}"
+
+    - name: Now we loop through the list of apps
+      ansible.builtin.include_tasks:
+        file: install_app.yml
+      loop: "{{ day_one_ops_apps_list }}"
+      loop_control:
+        loop_var: _app_to_install

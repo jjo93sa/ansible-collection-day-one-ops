@@ -1,0 +1,42 @@
+- name: Is app already installed
+  ansible.builtin.shell:
+    cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && which {{ _app_to_install }}'
+    executable: /bin/bash
+  register: _query_app_result
+  ignore_errors: true
+  changed_when: false
+
+- name: Install missing app with homebrew
+  ansible.builtin.shell:
+    cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && brew file install {{ day_one_ops_apps_map[_app_to_install] | default(_app_to_install) }}'
+  register: _install_app_result
+  changed_when:
+    - '"Installing {{ day_one_ops_apps_map[_app_to_install] | default(_app_to_install) }}" in _install_app_result.stdout'
+  when: _query_app_result.rc != 0
+
+- name: Does the dotfiles repo exist?
+  ansible.builtin.stat:
+    path: "{{ _deploy_user_dotfiles ~ '/' ~ (day_one_ops_apps_map[_app_to_install] | default(_app_to_install)) }}"
+  register: _dotfiles_result
+
+- name: Check stow binary exists
+  ansible.builtin.shell:
+    cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && which stow'
+    executable: /bin/bash
+  register: _query_stow_result
+  ignore_errors: true
+  changed_when: false
+
+- name: Link the configuration
+  ansible.builtin.shell:
+    cmd: 'eval "$({{ _default_brew_path }}/brew shellenv)" && stow --dotfiles -d {{ _deploy_user_dotfiles }} -t {{ _deploy_user_home }} {{ day_one_ops_apps_map[_app_to_install] | default(_app_to_install) }}'
+  when:
+    - _dotfiles_result.stat.exists
+    - _query_stow_result.rc == 0
+  register: _stow_link_result
+  changed_when:
+    - _stow_link_result.rc == 0
+
+- name: Debug stow link result
+  ansible.builtin.debug:
+    var: _stow_link_result

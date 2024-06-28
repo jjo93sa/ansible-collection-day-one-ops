@@ -1,0 +1,6 @@
+---
+day_one_ops_apps_list_default:
+  - nvim
+
+day_one_ops_apps_map_default:
+  nvim: neovim
